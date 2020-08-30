@@ -2,6 +2,7 @@
 
 void cd(char *path) {
     char *token = (char *) malloc(sizeof(path) + 5);
+    char *remember_token = token;
     strcpy(token, path);
     token = strtok(token, " \t\n\r");
     
@@ -13,6 +14,7 @@ void cd(char *path) {
     getcwd(PWD, sizeof PWD);
 
     // reset the token
+    token = remember_token;
     strcpy(token, path);
     token = strtok(token, " \t\n\r");
     token = strtok(NULL, "/\n");
@@ -28,15 +30,14 @@ void cd(char *path) {
         } else if (chdir(token) == -1) {
             chdir(store_PWD);
             perror("Error");
-            free(token);
+            free(remember_token);
             return;
         }
         token = strtok(NULL, "/\n");
     }
 
     getcwd(PWD, sizeof PWD);
-    printf("%s\n", PWD);
-    free(token);
+    free(remember_token);
     return;
 }
 

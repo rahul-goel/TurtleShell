@@ -34,6 +34,7 @@ void echo_single(char* str) {
 // takes in the command which includes the echo keyword
 void echo(char *line) {
     char *token = (char *) malloc(sizeof (line) + 5);
+    char *remember_token = token;
     strcpy(token, line);
 
     token = strtok(token, " \n\t\r");
@@ -43,7 +44,7 @@ void echo(char *line) {
         token = strtok(NULL, " \n\t\r");
     }
     printf("\n");
-    free(token);
+    free(remember_token);
 }
 
 /*

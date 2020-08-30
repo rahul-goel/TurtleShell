@@ -1,4 +1,4 @@
-#include "header.c"
+#include "header.h"
 
 int is_hidden(char *path) {
     return path[0] == '.';
@@ -74,6 +74,7 @@ void ls_normal_file(char *abspath, int hiddenflag) {
     } else {
         ls_normal_single(directory, filename);
     }
+    printf("\n");
 }
 
 
@@ -198,6 +199,49 @@ void ls_flag_wrapper(char *abspath, int hiddenflag, int listflag) {
             ls_normal_file(abspath, 0);
         }
     }
+}
+
+// input must contain full command containing ls and the flags
+void ls(char *command) {
+    char *token = (char *) malloc((strlen(command) + 1)* sizeof(char));
+    char *remember_token = token;
+    strcpy(token, command);
+    token = strtok(token, " \t\r\n");
+    token = strtok(NULL, " \t\r\n");
+
+    // one pass to set the flags
+    int hiddenflag = 1, listflag = 0;
+    while (token != NULL) {
+        if (strcmp(token, "-l") == 0) {
+            listflag = 1;
+        } else if (strcmp(token, "-a") == 0) {
+            hiddenflag = 0;
+        } else if (strcmp(token, "-al") == 0 || strcmp(token, "-la") == 0) {
+            listflag = 1, hiddenflag = 0;
+        }
+        token = strtok(NULL, " \t\r\n");
+    }
+
+    // another pass to list it out
+    token = remember_token;
+    strcpy(token, command);
+    token = strtok(token, " \t\r\n");
+    token = strtok(NULL, " \t\r\n");
+    int count_of_disp = 0;
+    while (token != NULL) {
+        if (strcmp(token, "-l") == 0) {
+        } else if (strcmp(token, "-a") == 0) {
+        } else if (strcmp(token, "-al") == 0 || strcmp(token, "-la") == 0) {
+        } else {
+            ls_flag_wrapper(token, hiddenflag, listflag);
+            count_of_disp++;
+        }
+        token = strtok(NULL, " \t\r\n");
+    }
+    if (count_of_disp == 0) {
+        ls_flag_wrapper(PWD, hiddenflag, listflag);
+    }
+    free(remember_token);
 }
 
 /*

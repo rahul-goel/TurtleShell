@@ -12,4 +12,10 @@ void pwd() {
         printf("%s\n", PWD);
     }
 }
-
+/*
+int main() {
+    getcwd(PWD, sizeof PWD);
+    getcwd(HOME, sizeof HOME);
+    pwd();
+}
+*/

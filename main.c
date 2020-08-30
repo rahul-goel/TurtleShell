@@ -1,11 +1,26 @@
 #include "header.h"
+#include "cd.c"
+#include "ls.c"
 
 void prompt();
 void initialise();
 
 int main() {
     initialise();
-    prompt();
+    while (1) {
+        prompt();
+        char *buf1 = (char *) malloc(2048 * sizeof(char));
+        char *buf2 = (char *) malloc(2048 * sizeof(char));
+        size_t n = 2048;
+        getline(&buf1, &n, stdin);
+        strcpy(buf2, buf1);
+        buf2 = strtok(buf2, " \t\n\r");
+        if (strcmp(buf2, "cd") == 0) {
+            cd(buf1);
+        } else if (buf2, "ls") {
+            ls(buf1);
+        }
+    }
     return 0;
 }
 
@@ -17,7 +32,7 @@ void prompt() {
         char *occ = strstr(PWD, HOME);
         if (occ) {
             printf(BBLU);
-            printf("<%s@%s:~/%s> ", USER, HOST, occ + strlen(HOME));
+            printf("<%s@%s:~%s> ", USER, HOST, occ + strlen(HOME));
             printf(WHT);
         } else {
             printf(BBLU);

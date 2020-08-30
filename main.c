@@ -16,13 +16,13 @@ void prompt() {
     } else {
         char *occ = strstr(PWD, HOME);
         if (occ) {
-            printf("\033[0;34m");
+            printf(BBLU);
             printf("<%s@%s:~/%s> ", USER, HOST, occ + strlen(HOME));
-            printf("\033[0m");
+            printf(WHT);
         } else {
-            printf("\033[0;34m");
+            printf(BBLU);
             printf("<%s@%s:%s> ", USER, HOST, PWD);
-            printf("\033[0m");
+            printf(WHT);
         }
     }
 }

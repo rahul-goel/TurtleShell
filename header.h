@@ -12,6 +12,7 @@
 #include <sys/param.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <dirent.h>
 #include <pwd.h>
 #include <grp.h>

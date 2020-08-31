@@ -1,35 +1,27 @@
 #include "header.h"
-#include "cd.c"
-#include "ls.c"
-#include "clear.c"
+#include "execute.c"
 
 void prompt();
 void initialise();
 void print_open_msg();
 void exit_shell();
+int middle();
 
 int main() {
     initialise();
-    while (1) {
+    do {
         prompt();
-        char *buf1 = (char *) malloc(2048 * sizeof(char));
-        char *buf2 = (char *) malloc(2048 * sizeof(char));
-        size_t n = 2048;
-        getline(&buf1, &n, stdin);
-        strcpy(buf2, buf1);
-        buf2 = strtok(buf2, " \t\n\r");
-        if (strcmp(buf2, "cd") == 0) {
-            cd(buf1);
-        } else if (strcmp(buf2, "ls") == 0) {
-            ls(buf1);
-        } else if (strcmp(buf2, "clear") == 0) {
-            clear();
-        } else if (strcmp(buf2, "exit") == 0) {
-            exit_shell();
-            return 0;
-        }
-    }
+    } while (middle());
+    exit_shell();
     return 0;
+}
+
+int middle() {
+    char *buf = (char *) malloc(2048 * sizeof(char));
+    size_t n = 2048;
+    int char_read = getline(&buf, &n, stdin);
+    return execute(buf);
+    free(buf);
 }
 
 void prompt() {

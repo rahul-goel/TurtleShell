@@ -94,7 +94,7 @@ void ls_l_single(char *directory, char *filename) {
         return;
     }
 
-    char perm[10];
+    char perm[11];
     perm[0] = (S_ISDIR(file_stat.st_mode) ? 'd' : '-');
     perm[1] = ((S_IRUSR & file_stat.st_mode) ? 'r' : '-');
     perm[2] = ((S_IWUSR & file_stat.st_mode) ? 'w' : '-');

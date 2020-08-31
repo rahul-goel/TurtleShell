@@ -17,7 +17,7 @@ void cd(char *path) {
     token = remember_token;
     strcpy(token, path);
     token = strtok(token, " \t\n\r");
-    token = strtok(NULL, "/\n");
+    token = strtok(NULL, "/\n\t\r");
 
 
     // store the PWD to return incase of error
@@ -33,7 +33,7 @@ void cd(char *path) {
             free(remember_token);
             return;
         }
-        token = strtok(NULL, "/\n");
+        token = strtok(NULL, "/\n\t\r");
     }
 
     getcwd(PWD, sizeof PWD);

@@ -1,6 +1,7 @@
 #include "header.h"
 #include "cd.c"
 #include "ls.c"
+#include "clear.c"
 
 void prompt();
 void initialise();
@@ -17,8 +18,12 @@ int main() {
         buf2 = strtok(buf2, " \t\n\r");
         if (strcmp(buf2, "cd") == 0) {
             cd(buf1);
-        } else if (buf2, "ls") {
+        } else if (strcmp(buf2, "ls") == 0) {
             ls(buf1);
+        } else if (strcmp(buf2, "clear") == 0) {
+            clear();
+        } else if (strcmp(buf2, "exit") == 0) {
+            return 0;
         }
     }
     return 0;

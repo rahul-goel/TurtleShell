@@ -5,6 +5,8 @@
 
 void prompt();
 void initialise();
+void print_open_msg();
+void exit_shell();
 
 int main() {
     initialise();
@@ -23,6 +25,7 @@ int main() {
         } else if (strcmp(buf2, "clear") == 0) {
             clear();
         } else if (strcmp(buf2, "exit") == 0) {
+            exit_shell();
             return 0;
         }
     }
@@ -60,4 +63,27 @@ void initialise() {
         perror("Error in finding the Current Working Directory");
         exit(1);
     }
+    print_open_msg();
+}
+
+void print_open_msg() {
+    char str[128];
+    FILE *fptr = NULL;
+    if ((fptr = fopen("asciart.txt", "r")) == NULL) {
+        return;
+    }
+    printf(BGRN);
+    while (fgets(str, sizeof str, fptr) != NULL) {
+        printf("%s", str);
+    }
+    printf(WHT);
+    fclose(fptr);
+}
+
+void exit_shell() {
+    printf(BGRN);
+    printf("Listen kiddo...\n");
+    printf("I don't have much time...\n");
+    printf("The only way to respond to lol and lmao is...\n");
+    printf(WHT);
 }

@@ -50,6 +50,9 @@ void run_excvp(char *buf) {
     } else {
         int status;
         waitpid(pid, &status, 0);
+        if (status != 0) {
+            perror("Error");
+        }
     }
 
     for (int i = 0; i < 100; i++) {

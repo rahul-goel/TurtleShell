@@ -19,7 +19,7 @@ int main() {
 int middle() {
     char *buf = (char *) malloc(2048 * sizeof(char));
     size_t n = 2048;
-    int char_read = getline(&buf, &n, stdin);
+    getline(&buf, &n, stdin);
     return execute(buf);
     free(buf);
 }

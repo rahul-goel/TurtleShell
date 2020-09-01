@@ -33,7 +33,7 @@ void echo_single(char* str) {
 
 // takes in the command which includes the echo keyword
 void echo(char *line) {
-    char *token = (char *) malloc(sizeof (line) + 5);
+    char *token = (char *) malloc(strlen(line) + 5);
     char *remember_token = token;
     strcpy(token, line);
 

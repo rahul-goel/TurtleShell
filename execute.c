@@ -7,7 +7,7 @@
 // malloc before calling execvp_parse and execvp and the free them
 // arg_cnt should be zero for input. through it the number of args will be given out
 void execvp_parse(char *input, char *command, char **arg, int* arg_cnt) {
-    char *buf = (char *) malloc(sizeof (input) + 10);
+    char *buf = (char *) malloc(strlen(input) + 10);
     strcpy(buf, input);
     char *token = buf;
     char *remember_token = token;
@@ -63,7 +63,7 @@ void run_excvp(char *buf) {
 }
 
 int check_last_ampersand(char *line) {
-    char *buf = (char *) malloc(sizeof(line));
+    char *buf = (char *) malloc(strlen(line));
     strcpy(buf, line);
     char *token = buf;
     char *remember_token = token;
@@ -91,7 +91,7 @@ int execute(char *line) {
         return 1;
     }
 
-    char *buf = (char *) malloc(sizeof(line));
+    char *buf = (char *) malloc(strlen(line));
     strcpy(buf, line);
     char *token = buf;
     char *remember_token = token;

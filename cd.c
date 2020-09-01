@@ -1,7 +1,7 @@
 #include "header.h"
 
 void cd(char *path) {
-    char *token = (char *) malloc(sizeof(path) + 5);
+    char *token = (char *) malloc(strlen(path) + 5);
     char *remember_token = token;
     strcpy(token, path);
     token = strtok(token, " \t\n\r");

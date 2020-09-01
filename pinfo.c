@@ -64,7 +64,9 @@ int is_valid_process(int pid) {
     sprintf(path, "/proc/%d/status", pid);
     FILE *f = fopen(path, "r");
     int flag = (f != NULL);
-    fclose(f);
+    if (f) {
+        fclose(f);
+    }
     return flag;
 }
 

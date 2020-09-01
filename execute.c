@@ -2,6 +2,7 @@
 #include "cd.c"
 #include "ls.c"
 #include "echo.c"
+#include "pinfo.c"
 
 // command and argv will be filled with the command and argv
 // malloc before calling execvp_parse and execvp and the free them
@@ -104,8 +105,10 @@ int execute(char *line) {
     if (check_last_ampersand(line)) {
 
     }
-
-    if (strcmp(token, "cd") == 0) {
+    
+    if (strcmp(token, "pinfo") == 0) {
+        pinfo(line);
+    } else if (strcmp(token, "cd") == 0) {
         cd(line);
     } else if (strcmp(token, "ls") == 0) {
         ls(line);

@@ -62,6 +62,30 @@ void run_excvp(char *buf) {
     free(command);
 }
 
+int check_last_ampersand(char *line) {
+    char *buf = (char *) malloc(sizeof(line));
+    strcpy(buf, line);
+    char *token = buf;
+    char *remember_token = token;
+    char *last_token = NULL;
+    
+    token = strtok(token, " \t\r\n"); 
+    while (token != NULL) {
+        last_token = token;
+        token = strtok(token, " \t\r\n");
+    }
+
+    int flag;
+    if (last_token == NULL || strcmp(last_token, "&")) {
+        flag = 1;
+    } else {
+        flag = 0;
+    }
+
+    free(remember_token);
+    return flag;
+}
+
 int execute(char *line) {
     if (line[0] == '\n') {
         return 1;
@@ -75,6 +99,10 @@ int execute(char *line) {
     token = strtok(token, " \t\r\n");
     if (strcmp(token, "exit") == 0) {
         return 0;
+    }
+
+    if (check_last_ampersand(line)) {
+
     }
 
     if (strcmp(token, "cd") == 0) {

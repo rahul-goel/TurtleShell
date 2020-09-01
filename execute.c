@@ -72,7 +72,7 @@ int check_last_ampersand(char *line) {
     token = strtok(token, " \t\r\n"); 
     while (token != NULL) {
         last_token = token;
-        token = strtok(token, " \t\r\n");
+        token = strtok(NULL, " \t\r\n");
     }
 
     int flag;

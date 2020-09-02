@@ -25,6 +25,39 @@ void execvp_parse(char *input, char *command, char **arg, int* arg_cnt) {
     free(remember_token);
 }
 
+void run_excvp_bg(char *buf) {
+    char *command = (char *) malloc(1024 * sizeof(char));
+    char **arg = (char **) malloc(100 * sizeof(char *));
+    int arg_cnt = 0;
+    for (int i = 0; i < 100; i++) {
+        arg[i] = (char *) malloc(1024 * sizeof (char));
+    }
+
+    execvp_parse(buf, command, arg, &arg_cnt);
+    int pid = fork();
+    if (pid < 0) {
+        perror("Error");
+    } else if (pid == 0) {
+        // change the child process group so that it happens in the background..
+        setpgid(0, 0);
+        if (execvp(command, arg) < 0) {
+            // did not execute correctly so i need to free the memory
+            perror("Error : No such command.");
+            for (int i = 0; i < 100; i++) {
+                free(arg[i]);
+            }
+            free(arg);
+            free(command);
+        }
+    } else {
+    }
+
+    for (int i = 0; i < 100; i++) {
+        free(arg[i]);
+    }
+    free(arg);
+    free(command);
+}
 
 void run_excvp(char *buf) {
     char *command = (char *) malloc(1024 * sizeof(char));
@@ -78,13 +111,23 @@ int check_last_ampersand(char *line) {
 
     int flag;
     if (last_token == NULL || strcmp(last_token, "&")) {
-        flag = 1;
-    } else {
         flag = 0;
+    } else {
+        flag = 1;
     }
 
     free(remember_token);
     return flag;
+}
+
+void remove_last_ampersand(char *line) {
+    int len = strlen(line);
+    for (int i = len - 1; i >= 0; i--) {
+        if (line[i] == '&') {
+            line[i] = '\0';
+            break;
+        }
+    }
 }
 
 int execute(char *line) {
@@ -103,10 +146,9 @@ int execute(char *line) {
     }
 
     if (check_last_ampersand(line)) {
-
-    }
-    
-    if (strcmp(token, "pinfo") == 0) {
+        remove_last_ampersand(line);
+        run_excvp_bg(line);
+    } else if (strcmp(token, "pinfo") == 0) {
         pinfo(line);
     } else if (strcmp(token, "cd") == 0) {
         cd(line);

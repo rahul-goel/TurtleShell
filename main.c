@@ -9,8 +9,10 @@ int middle();
 
 int main() {
     initialise();
+    signal(SIGCHLD, check_bg_process);
     do {
         prompt();
+        fflush(stdout);
     } while (middle());
     exit_shell();
     return 0;
@@ -20,8 +22,9 @@ int middle() {
     char *buf = (char *) malloc(2048 * sizeof(char));
     size_t n = 2048;
     getline(&buf, &n, stdin);
-    return execute(buf);
+    int flag = execute(buf);
     free(buf);
+    return flag;
 }
 
 void prompt() {

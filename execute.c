@@ -4,6 +4,29 @@
 #include "echo.c"
 #include "pinfo.c"
 
+// argument is sig just for the sake of it i guess;
+// syntax for the functional call from signal;
+void check_bg_process(int sig) {
+    int status;
+    // -1 means any child process;
+    // since signal has been raised, then the process would have exited;
+    // return value will give the id of the just completed process;
+    int pid = waitpid(-1, &status, WNOHANG);
+    if (pid > 0){
+        if (WEXITSTATUS(status)) {
+            char out[100];
+            memset(out, '\0', sizeof out);
+            sprintf(out, "\nProcess with pid %d exited normally.\n", pid);
+            write(2, out, sizeof out);
+        } else {
+            char out[100];
+            memset(out, '\0', sizeof out);
+            sprintf(out, "\nProcess with pid %d did not exit normally.\n", pid);
+            write(2, out, sizeof out);
+        }
+    }
+}
+
 // command and argv will be filled with the command and argv
 // malloc before calling execvp_parse and execvp and the free them
 // arg_cnt should be zero for input. through it the number of args will be given out

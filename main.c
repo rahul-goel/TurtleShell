@@ -2,6 +2,8 @@
 #include "ls.h"
 #include "execute.h"
 #include "prompt.h"
+#include "ctrl_c.h"
+#include "history.h"
 
 void prompt();
 void initialise();
@@ -13,6 +15,7 @@ void global_assign();
 int main() {
     initialise();
     signal(SIGCHLD, check_bg_process);
+    signal(SIGINT, ctrl_c);
     do {
         prompt();
         fflush(stdout);
@@ -25,6 +28,7 @@ int middle() {
     char *buf = (char *) malloc(2048 * sizeof(char));
     size_t n = 2048;
     getline(&buf, &n, stdin);
+    add_to_history(buf);
     int flag = execute(buf);
     free(buf);
     return flag;

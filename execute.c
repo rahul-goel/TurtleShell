@@ -4,6 +4,7 @@
 #include "cd.h"
 #include "echo.h"
 #include "pinfo.h"
+#include "history.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -180,6 +181,8 @@ int execute(char *line) {
         ls(line);
     } else if (strcmp(token, "echo") == 0) {
         echo(line);
+    } else if (strcmp(token, "history") == 0) {
+        history();
     } else {
         run_excvp(line);
     }

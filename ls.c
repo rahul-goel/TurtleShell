@@ -1,4 +1,5 @@
 #include "header.h"
+#include "ls.h"
 
 int is_hidden(char *path) {
     return path[0] == '.';

@@ -1,4 +1,5 @@
 #include "header.h"
+#include "pwd.h"
 
 void pwd() {
     if (getcwd(PWD, sizeof PWD) == NULL) {

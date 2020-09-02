@@ -1,4 +1,5 @@
 #include "header.h"
+#include "pinfo.h"
 
 // returns the virtual memory consumed by a procss if it is consumed
 // else returns -1

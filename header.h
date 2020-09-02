@@ -17,10 +17,8 @@
 #include <dirent.h>
 #include <pwd.h>
 #include <grp.h>
+#include "global_var.h"
 
-// Environment Variables declared globally throughout the program.
-char HOST[1024], USER[1024], PWD[2048], HOME[2048], SHELL[] = "TurtleShell";
-char HOST_str[] = "HOST", USER_str[] = "USER", PWD_str[] = "PWD", HOME_str[] = "HOME", SHELL_str[] = "SHELL";
 
 // Define colours
 //Regular text

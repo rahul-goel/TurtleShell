@@ -1,11 +1,14 @@
 #include "header.h"
-#include "execute.c"
+#include "ls.h"
+#include "execute.h"
+#include "prompt.h"
 
 void prompt();
 void initialise();
 void print_open_msg();
 void exit_shell();
 int middle();
+void global_assign();
 
 int main() {
     initialise();
@@ -27,34 +30,17 @@ int middle() {
     return flag;
 }
 
-void prompt() {
-    if (getcwd(PWD, sizeof PWD) == NULL) {
-        perror("Error in finding the Current Wokring Directory.\n");
-        exit(1);
-    } else {
-        char *occ = strstr(PWD, HOME);
-        if (occ) {
-            printf(BBLU);
-            printf("<%s@%s:~%s> ", USER, HOST, occ + strlen(HOME));
-            printf(WHT);
-        } else {
-            printf(BBLU);
-            printf("<%s@%s:%s> ", USER, HOST, PWD);
-            printf(WHT);
-        }
-    }
-}
-
 void initialise() {
-    if (gethostname(HOST, sizeof HOST) == -1) {
+    global_assign();
+    if (gethostname(HOST, 1024 * sizeof(HOST)) == -1) {
         perror("Error in retrieving hostname.");
         exit(1);
     }
-    if (getlogin_r(USER, sizeof USER) != 0) {
+    if (getlogin_r(USER, 1024 * sizeof(USER)) != 0) {
         perror("Error in retrieving username.");
         exit(1);
     }
-    if (getcwd(HOME, sizeof HOME) == NULL) {
+    if (getcwd(HOME, 1024 * sizeof(HOME)) == NULL) {
         perror("Error in finding the Current Working Directory");
         exit(1);
     }
@@ -81,4 +67,35 @@ void exit_shell() {
     printf("I don't have much time...\n");
     printf("The only way to respond to lol and lmao is...\n");
     printf(WHT);
+}
+
+void global_assign() {
+    HOST = (char *) malloc(sizeof (char) * 1024);
+    USER = (char *) malloc(sizeof (char) * 1024);
+    PWD = (char *) malloc(sizeof (char) * 1024);
+    HOME = (char *) malloc(sizeof (char) * 1024);
+    SHELL = (char *) malloc(sizeof (char) * 1024);
+    HOST_str = (char *) malloc(sizeof (char) * 1024);
+    USER_str = (char *) malloc(sizeof (char) * 1024);
+    PWD_str = (char *) malloc(sizeof (char) * 1024);
+    HOME_str = (char *) malloc(sizeof (char) * 1024);
+    SHELL_str = (char *) malloc(sizeof (char) * 1024);
+
+    memset(HOST, '\0', sizeof(char) * 1024);
+    memset(USER, '\0', sizeof(char) * 1024);
+    memset(PWD, '\0', sizeof(char) * 1024);
+    memset(HOME, '\0', sizeof(char) * 1024);
+    memset(SHELL, '\0', sizeof(char) * 1024);
+    memset(HOST_str, '\0', sizeof(char) * 1024);
+    memset(USER_str, '\0', sizeof(char) * 1024);
+    memset(PWD_str, '\0', sizeof(char) * 1024);
+    memset(HOME_str, '\0', sizeof(char) * 1024);
+    memset(SHELL_str, '\0', sizeof(char) * 1024);
+
+    strcpy(SHELL, "TurtleShell");
+    strcpy(HOST_str, "HOST");
+    strcpy(USER_str, "USER");
+    strcpy(PWD_str, "PWD");
+    strcpy(HOME_str, "HOME");
+    strcpy(SHELL_str, "SHELL");
 }

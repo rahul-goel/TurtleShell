@@ -1,4 +1,5 @@
 #include "header.h"
+#include "echo.h"
 
 int print_env_var(char *v) {
     v++;

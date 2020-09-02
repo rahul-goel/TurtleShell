@@ -1,8 +1,9 @@
 #include "header.h"
-#include "cd.c"
-#include "ls.c"
-#include "echo.c"
-#include "pinfo.c"
+#include "execute.h"
+#include "ls.h"
+#include "cd.h"
+#include "echo.h"
+#include "pinfo.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -13,7 +14,7 @@ void check_bg_process(int sig) {
     // return value will give the id of the just completed process;
     int pid = waitpid(-1, &status, WNOHANG);
     if (pid > 0){
-        if (WEXITSTATUS(status)) {
+        if (WIFEXITED(status)) {
             char out[100];
             memset(out, '\0', sizeof out);
             sprintf(out, "\nProcess with pid %d exited normally.\n", pid);

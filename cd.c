@@ -1,4 +1,5 @@
 #include "header.h"
+#include "cd.h"
 
 void cd(char *path) {
     char *token = (char *) malloc(strlen(path) + 5);

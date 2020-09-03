@@ -9,7 +9,7 @@
 void prompt();
 void initialise();
 void print_open_msg();
-void exit_shell();
+void terminate();
 int middle();
 void global_assign();
 
@@ -21,7 +21,7 @@ int main() {
         prompt();
         fflush(stdout);
     } while (middle());
-    exit_shell();
+    terminate();
     return 0;
 }
 
@@ -66,11 +66,11 @@ void print_open_msg() {
     fclose(fptr);
 }
 
-void exit_shell() {
+void terminate() {
     printf(BGRN);
-    printf("Listen kiddo...\n");
+    printf("\nListen kiddo...\n");
     printf("I don't have much time...\n");
-    printf("The only way to respond to lol and lmao is...\n");
+    printf("The only way to respond to lol and lmao is...\n\n");
     printf(WHT);
 }
 

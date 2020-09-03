@@ -100,7 +100,16 @@ void print_out_pinfo(int pid) {
         printf("Could not find path for executable.\n");
     } else {
         // TODO - handle the case when home is the part of exe_path
-        printf("Executable Path : %s\n", exe_path);
+        // handling if the executable is in the home directory
+        char *occ = strstr(exe_path, HOME);
+        printf("Executable Path : ");
+        printf(BBLU);
+        if (occ) {
+            printf("~%s\n", occ + strlen(HOME));
+        } else {
+            printf("%s\n", exe_path);
+        }
+        printf(WHT);
     }
     free(exe_path);
 }

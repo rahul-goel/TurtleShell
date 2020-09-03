@@ -99,7 +99,7 @@ void run_excvp(char *buf) {
     } else if (pid == 0) {
         if (execvp(command, arg) < 0) {
             // did not execute correctly so i need to free the memory
-            perror("Error : No such command.");
+            write(2, "Error : No such command.\n", 26);
             for (int i = 0; i < 100; i++) {
                 free(arg[i]);
             }

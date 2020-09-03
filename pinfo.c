@@ -94,6 +94,7 @@ void print_out_pinfo(int pid) {
 
     char *exe_path = (char *) malloc(sizeof(char) * 512);
     int exe_path_size = 512;
+    memset(exe_path, '\0', exe_path_size);
     int exe_path_ret = get_executable_path(pid, exe_path, exe_path_size);
     if (exe_path_ret == -1) {
         printf("Could not find path for executable.\n");

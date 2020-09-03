@@ -4,6 +4,7 @@
 #include "prompt.h"
 #include "ctrl_c.h"
 #include "history.h"
+#include "bg_proc_list.h"
 
 void prompt();
 void initialise();
@@ -74,6 +75,8 @@ void exit_shell() {
 }
 
 void global_assign() {
+    cnt_bg_proc = 0;
+
     HOST = (char *) malloc(sizeof (char) * 1024);
     USER = (char *) malloc(sizeof (char) * 1024);
     PWD = (char *) malloc(sizeof (char) * 1024);

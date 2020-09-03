@@ -5,6 +5,7 @@
 #include "echo.h"
 #include "pinfo.h"
 #include "history.h"
+#include "bg_proc_list.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -15,17 +16,20 @@ void check_bg_process(int sig) {
     // return value will give the id of the just completed process;
     int pid = waitpid(-1, &status, WNOHANG);
     if (pid > 0){
+        char *pname = (char *) malloc(sizeof(char) * 1024);
+        find_processname(pid, pname);
         if (WIFEXITED(status)) {
             char out[100];
             memset(out, '\0', sizeof out);
-            sprintf(out, "\nProcess with pid %d exited normally.\n", pid);
+            sprintf(out, "\nProcess %s with pid %d exited normally.\n", pname, pid);
             write(2, out, sizeof out);
         } else {
             char out[100];
             memset(out, '\0', sizeof out);
-            sprintf(out, "\nProcess with pid %d did not exit normally.\n", pid);
+            sprintf(out, "\nProcess %s with pid %d did not exit normally.\n", pname, pid);
             write(2, out, sizeof out);
         }
+        free(pname);
     }
 }
 
@@ -65,8 +69,10 @@ void run_excvp_bg(char *buf) {
     } else if (pid == 0) {
         // change the child process group so that it happens in the background..
         setpgid(0, 0);
+
         if (execvp(command, arg) < 0) {
             // did not execute correctly so i need to free the memory
+            remove_latest_insertion();
             perror("Error : No such command.");
             for (int i = 0; i < 100; i++) {
                 free(arg[i]);
@@ -75,6 +81,10 @@ void run_excvp_bg(char *buf) {
             free(command);
         }
     } else {
+        struct bg_proc temp;
+        temp.pid = pid;
+        strcpy(temp.pname, arg[0]);
+        insert_bg_process(&temp);
     }
 
     for (int i = 0; i < 100; i++) {
@@ -127,8 +137,8 @@ int check_last_ampersand(char *line) {
     char *token = buf;
     char *remember_token = token;
     char *last_token = NULL;
-    
-    token = strtok(token, " \t\r\n"); 
+
+    token = strtok(token, " \t\r\n");
     while (token != NULL) {
         last_token = token;
         token = strtok(NULL, " \t\r\n");

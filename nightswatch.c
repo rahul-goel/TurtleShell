@@ -54,7 +54,7 @@ void nightswatch(char *line) {
 }
 
 int print_interrupt_CPU() {
-    FILE *f = fopen("/proc/interrupts", "r"); 
+    FILE *f = fopen("/proc/interrupts", "r");
     if (f == NULL) {
         printf("Error : Unable to open the interrupt file.");
         return -1;
@@ -80,7 +80,7 @@ int print_interrupt_CPU() {
 // prints the keyboard interrupts which is the i9042 line in /proc/interrupts
 // which is the 3rd line always
 void interrupt() {
-    FILE *f = fopen("/proc/interrupts", "r"); 
+    FILE *f = fopen("/proc/interrupts", "r");
     if (f == NULL) {
         printf("Error : Unable to open the interrupt file.");
     } else {
@@ -123,8 +123,8 @@ void newborn() {
         int max_pid = 0;
         while ((e = readdir(d))!= NULL) {
             if (atoi(e->d_name) != 0) {
-                char statfile[256];
-                memset(statfile, '\0', 256);
+                char statfile[1024];
+                memset(statfile, '\0', 1024);
                 sprintf(statfile, "/proc/%s/stat", e->d_name);
 
                 FILE *f = fopen(statfile, "r");
@@ -136,7 +136,7 @@ void newborn() {
                     getline(&buf, &buf_size, f);
                     char *token = buf;
                     char *remember_token = token;
-    
+
                     token = strtok(token, " \t\n\r");
                     for (int i = 0; i < 21; i++) {
                         token = strtok(NULL, " \t\n\r");
@@ -153,7 +153,7 @@ void newborn() {
                 fclose(f);
             }
         }
-        
+
         printf("%d\n", max_pid);
     }
 }

@@ -67,10 +67,8 @@ void print_open_msg() {
 }
 
 void terminate() {
-    printf(BGRN);
-    printf("\nListen kiddo...\n");
-    printf("I don't have much time...\n");
-    printf("The only way to respond to lol and lmao is...\n\n");
+    printf(BRED);
+    printf("\nWhat did The Big Bang Theory fans say after completing the Operating Systems Assignment...?\n.\n.\n.\nSheldon!\n");
     printf(WHT);
 }
 

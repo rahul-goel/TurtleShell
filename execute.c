@@ -6,6 +6,7 @@
 #include "pinfo.h"
 #include "history.h"
 #include "bg_proc_list.h"
+#include "nightswatch.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -183,6 +184,8 @@ int execute(char *line) {
     if (check_last_ampersand(line)) {
         remove_last_ampersand(line);
         run_excvp_bg(line);
+    } else if (strcmp(token, "nightswatch") == 0) {
+        nightswatch(line);
     } else if (strcmp(token, "pinfo") == 0) {
         pinfo(line);
     } else if (strcmp(token, "cd") == 0) {

@@ -1,5 +1,19 @@
+#include <termios.h>
+#include <time.h>
 #include "header.h"
 #include "nightswatch.h"
+#include <ncurses.h>
+
+int kbhit(void) {
+    int ch = getch();
+
+    if (ch != ERR) {
+        ungetch(ch);
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 void nightswatch(char *line) {
     char *buf = (char *) malloc(sizeof(char) * (5 + strlen(line)));
@@ -22,6 +36,7 @@ void nightswatch(char *line) {
 
     // another pass
     strcpy(buf, line);
+    token = buf;
     token = strtok(token, " \t\r\n");
     token = strtok(NULL, " \t\r\n");
     if (strcmp(token, "-n") != 0) {
@@ -30,25 +45,57 @@ void nightswatch(char *line) {
         return;
     }
     token = strtok(NULL, " \t\r\n");
-    int n = atoi(token);
+    time_t n = atoi(token);
     if (n == 0) {
         printf("Error : Syntax error in nightswatch.\n, The second argument must be a positive integer.");
         free(remember_token);
         return;
     }
 
-    strtok(NULL, " \t\n\r");
+    token = strtok(NULL, " \t\n\r");
 
     int interruptflag = 0;
     if (strcmp(token, "interrupt") == 0) {
         interruptflag = 1;
     }
 
+    newterm(NULL, stderr, stdin);
+    scrollok(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
+
+    int row = 0;
+
     if (interruptflag) {
-        if (print_interrupt_CPU() == 0) {
-            interrupt();
+        move(row++, 0);
+        refresh();
+        print_interrupt_CPU();
+    }
+
+    time_t tiktok = time(0);
+
+    while (1) {
+        if (kbhit()) {
+            int ch;
+            if ((ch = getch()) != 'q') {
+            } else {
+                break;
+            }
+        } else {
+            if (time(0) - tiktok >= n){
+                tiktok = time(0);
+                move(row++, 0);
+                refresh();
+                if (interruptflag) {
+                    interrupt();
+                } else {
+                    newborn();
+                }
+            }
         }
     }
+
+    endwin();
+
 
     free(remember_token);
 }
@@ -56,7 +103,7 @@ void nightswatch(char *line) {
 int print_interrupt_CPU() {
     FILE *f = fopen("/proc/interrupts", "r");
     if (f == NULL) {
-        printf("Error : Unable to open the interrupt file.");
+        printw("Error : Unable to open the interrupt file.");
         return -1;
     } else {
         char *line = (char *) malloc(sizeof (char) * 2048);
@@ -64,12 +111,17 @@ int print_interrupt_CPU() {
         size_t line_sz = 2048;
         getline(&line, &line_sz, f);
 
+        char out[500];
+        memset(out, '\0', sizeof(char) * 500);
+        char temp[100];
+
         line = strtok(line, " \t\r\n");
         while (line != NULL) {
-            printf("%10s", line);
+            sprintf(temp, "%10s", line);
+            strcat(out, temp);
             line = strtok(NULL, " \t\r\n");
         }
-        printf("\n");
+        printw("%s\n", out);
 
         free(remember_line);
     }
@@ -102,10 +154,15 @@ void interrupt() {
             }
         }
 
+        char out[500];
+        char temp[100];
+        memset(out, '\0', sizeof(char) * 500);
+
         for (int i = 0; i < int_cnt; i++) {
-            printf("%10d", int_list[i]);
+            sprintf(temp, "%10d", int_list[i]);
+            strcat(out, temp);
         }
-        printf("\n");
+        printw("%s\n", out);
 
         free(remember_line);
     }
@@ -154,11 +211,6 @@ void newborn() {
             }
         }
 
-        printf("%d\n", max_pid);
+        printw("%d\n", max_pid);
     }
-}
-
-int main() {
-    newborn();
-    return 0;
 }

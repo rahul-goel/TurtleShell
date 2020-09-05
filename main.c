@@ -26,8 +26,8 @@ int main() {
 }
 
 int middle() {
-    char *buf = (char *) malloc(2048 * sizeof(char));
-    size_t n = 2048;
+    char *buf;
+    size_t n = 0;
     getline(&buf, &n, stdin);
     add_to_history(buf);
     int flag = execute(buf);

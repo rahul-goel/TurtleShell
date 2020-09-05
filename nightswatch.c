@@ -71,7 +71,7 @@ void nightswatch(char *line) {
         print_interrupt_CPU();
     }
 
-    time_t tiktok = time(0);
+    time_t tiktok = time(0) - n;
 
     while (1) {
         if (kbhit()) {

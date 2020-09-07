@@ -177,7 +177,7 @@ void newborn() {
         printf("Error : Could not open the /proc dirctory.\n");
     } else {
         long long max_start_time = 0;
-        int max_pid = 0;
+        pid_t max_pid = 0;
         while ((e = readdir(d))!= NULL) {
             if (atoi(e->d_name) != 0) {
                 char statfile[1024];

@@ -3,7 +3,7 @@
 
 // returns the virtual memory consumed by a procss if it is consumed
 // else returns -1
-int get_virtual_memory(int pid) {
+int get_virtual_memory(pid_t pid) {
     char file_path[64];
     sprintf(file_path, "/proc/%d/status", pid);
     FILE *f = fopen(file_path, "r");
@@ -31,7 +31,7 @@ int get_virtual_memory(int pid) {
     return ret;
 }
 
-char get_process_state(int pid) {
+char get_process_state(pid_t pid) {
     char file_path[64];
     sprintf(file_path, "/proc/%d/status", pid);
     FILE *f = fopen(file_path, "r");
@@ -57,14 +57,14 @@ char get_process_state(int pid) {
 }
 
 // returns -1 for unsucessful execution, stores the path in passed string
-int get_executable_path(int pid, char *path, int path_size) {
+int get_executable_path(pid_t pid, char *path, int path_size) {
     char file_path[64];
     sprintf(file_path, "/proc/%d/exe", pid);
     int success_flag = readlink(file_path, path, path_size);
     return success_flag;
 }
 
-int is_valid_process(int pid) {
+int is_valid_process(pid_t pid) {
     char path[64];
     sprintf(path, "/proc/%d/status", pid);
     FILE *f = fopen(path, "r");
@@ -75,7 +75,7 @@ int is_valid_process(int pid) {
     return flag;
 }
 
-void print_out_pinfo(int pid) {
+void print_out_pinfo(pid_t pid) {
     printf("Process Id: %d\n", pid);
 
     char p_state = get_process_state(pid);
@@ -123,7 +123,7 @@ void pinfo(char *line) {
 
     token = strtok(token, " \r\t\n");
     token = strtok(NULL, " \r\t\n");
-    int pid;
+    pid_t pid;
 
     // no argument provided
     if (token == NULL) {

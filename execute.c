@@ -15,7 +15,7 @@ void check_bg_process(int sig) {
     // -1 means any child process;
     // since signal has been raised, then the process would have exited;
     // return value will give the id of the just completed process;
-    int pid = waitpid(-1, &status, WNOHANG);
+    pid_t pid = waitpid(-1, &status, WNOHANG);
     if (pid > 0){
         char *pname = (char *) malloc(sizeof(char) * 1024);
         find_processname(pid, pname);
@@ -64,7 +64,7 @@ void run_excvp_bg(char *buf) {
     }
 
     execvp_parse(buf, command, arg, &arg_cnt);
-    int pid = fork();
+    pid_t pid = fork();
     if (pid < 0) {
         perror("Error");
     } else if (pid == 0) {
@@ -104,7 +104,7 @@ void run_excvp(char *buf) {
     }
 
     execvp_parse(buf, command, arg, &arg_cnt);
-    int pid = fork();
+    pid_t pid = fork();
     if (pid < 0) {
         perror("Error");
     } else if (pid == 0) {

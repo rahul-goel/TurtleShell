@@ -68,7 +68,7 @@ void print_open_msg() {
 
 void terminate() {
     printf(BRED);
-    printf("\nWhat did The Big Bang Theory fans say after completing the Operating Systems Assignment...?\n.\n.\n.\nSheldon!\n");
+    printf("\nWhat did The Big Bang Theory fans say after completing the Operating Systems Assignment...?\n.\n.\n.\nSheldon!\n\n");
     printf(WHT);
 }
 

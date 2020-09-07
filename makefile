@@ -12,3 +12,4 @@ all:
 	gcc -g -c bg_proc_list.c
 	gcc -g -c nightswatch.c
 	gcc -g -Wall main.c global_var.o prompt.o ls.o pwd.o echo.o execute.o pinfo.o cd.o ctrl_c.o history.o bg_proc_list.o nightswatch.o -ltinfo -lncurses -o TurtleShell
+	rm -rf *.o

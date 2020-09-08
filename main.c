@@ -17,6 +17,8 @@ int main() {
     initialise();
     signal(SIGCHLD, check_bg_process);
     signal(SIGINT, ctrl_c);
+
+    usleep(100 * 1000);
     do {
         prompt();
         fflush(stdout);
@@ -28,7 +30,10 @@ int main() {
 int middle() {
     char *buf;
     size_t n = 0;
-    getline(&buf, &n, stdin);
+    int ret = getline(&buf, &n, stdin);
+    if (ret == -1) {
+        return 0;
+    }
     add_to_history(buf);
     int flag = execute(buf);
     free(buf);

@@ -32,6 +32,7 @@ void check_bg_process(int sig) {
         }
         free(pname);
     }
+    fflush(stdout);
 }
 
 // command and argv will be filled with the command and argv

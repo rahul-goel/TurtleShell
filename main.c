@@ -18,7 +18,6 @@ int main() {
     signal(SIGCHLD, check_bg_process);
     signal(SIGINT, ctrl_c);
 
-    usleep(100 * 1000);
     do {
         prompt();
         fflush(stdout);

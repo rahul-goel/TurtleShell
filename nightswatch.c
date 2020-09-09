@@ -96,7 +96,6 @@ void nightswatch(char *line) {
 
     endwin();
 
-
     free(remember_token);
 }
 

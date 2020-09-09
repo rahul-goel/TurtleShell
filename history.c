@@ -41,7 +41,7 @@ void trim_history(char *path) {
 void add_to_history(char *command) {
     char path[1024];
     strcpy(path, HOME);
-    strcat(path, "/history.txt");
+    strcat(path, "/.history.txt");
     FILE *f = fopen(path, "a");
     fclose(f);
     trim_history(path);
@@ -50,7 +50,7 @@ void add_to_history(char *command) {
 void history() {
     char path[1024];
     strcpy(path, HOME);
-    strcat(path, "/history.txt");
+    strcat(path, "/.history.txt");
     FILE *f = fopen(path, "r");
 
     int cnt = 0;

@@ -1,4 +1,4 @@
 *.o
 TurtleShell
-history.txt
+.history.txt
 *.out

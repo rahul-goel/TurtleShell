@@ -4,5 +4,4 @@
 
 void ctrl_c(int sig) {
     printf("\n");
-    prompt();
 }

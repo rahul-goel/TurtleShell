@@ -2,6 +2,13 @@
 
 *People say that there is no place like home. Well, for that reason I carry my $HOME with me.* - Turtle
 
+## Build Instructions
+After entering the directory :
+```
+make
+./TurtleShell
+```
+
 ## Features
 - Supports `;` separated multiple commands in a single line.
 - Stores history of the last 20 commands.

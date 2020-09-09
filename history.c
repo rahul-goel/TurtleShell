@@ -49,11 +49,34 @@ void add_to_history(char *command) {
     trim_history(path);
 }
 
-void history() {
+void history(char *line) {
     char path[1024];
     strcpy(path, HOME);
     strcat(path, "/.history.txt");
     FILE *f = fopen(path, "r");
+
+    int arg = 10;
+    {
+        char *buf = (char *) malloc(sizeof(char) * strlen(line));
+        strcpy(buf, line);
+        char *token = buf;
+        char *remember_token = token;
+
+        token = strtok(token, " \t\n\r");
+        token = strtok(NULL, " \t\n\r");
+        if (token != NULL) {
+            arg = atoi(token);
+            token = strtok(NULL, " \t\n\r");
+
+            if (token != NULL) {
+                printf("Error : Invalid Syntax for history.");
+                free(remember_token);
+                return;
+            }
+        }
+
+        free(remember_token);
+    }
 
     int cnt = 0;
     char *buffer;
@@ -66,7 +89,7 @@ void history() {
     int ptr = 0;
     while (getline(&buffer, &n, f) != -1) {
         ptr++;
-        if (cnt - 10 <= ptr && ptr <= cnt) {
+        if (cnt - arg + 1 <= ptr && ptr <= cnt) {
             printf("%s", buffer);
         }
     }

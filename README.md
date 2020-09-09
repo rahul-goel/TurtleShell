@@ -21,7 +21,7 @@ make
   - `cd` - Takes the absolute path or the relative path as an argument.
   - `pinfo` - Can or cannot take arguments. When no arguments are given, it prints the details of the process of the shell. When a valid process id is given as the argument, it prints the details of that process.
   - `nightswatch` - Syntax is `nightswatch -n [number_of_seconds] [interrupt/newborn]`. It prints the given argument every `number_of_seconds` in a man-page like style.
-  - `history` - Prints the last 10 commands.
+  - `history` - Prints the last 10 commands if no argument is given. Else prints the last `arg` commands.
   - `exit` - Exits the shell.
 
 All the `.c` files have a corresponding `.h` file (except `main.c`) which contain all the function declarations.

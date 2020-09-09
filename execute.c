@@ -198,7 +198,7 @@ int execute_one(char *line) {
     } else if (strcmp(token, "echo") == 0) {
         echo(line);
     } else if (strcmp(token, "history") == 0) {
-        history();
+        history(line);
     } else {
         run_excvp(line);
     }

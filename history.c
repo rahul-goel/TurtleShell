@@ -32,6 +32,7 @@ void trim_history(char *path) {
         fclose(f);
         f = fopen(path, "w");
         for (int i = 0; i < 20; i++) {
+            fprintf(f, "%s", store[i]);
         }
         fclose(f);
     }
@@ -43,6 +44,7 @@ void add_to_history(char *command) {
     strcpy(path, HOME);
     strcat(path, "/.history.txt");
     FILE *f = fopen(path, "a");
+    fprintf(f, "%s", command);
     fclose(f);
     trim_history(path);
 }

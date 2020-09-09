@@ -2,6 +2,21 @@
 
 *People say that there is no place like home. Well, for that reason I carry my $HOME with me.* - Turtle
 
+## Features
+- Supports `;` separated multiple commands in a single line.
+- Stores history of the last 20 commands.
+- Supports the following environment variables - `SHELL` `HOME` `PWD` `HOST` `USER`
+- Supports background processes with by appending ` &` at the end of the command.
+- Commands:
+  - `ls` - Can take `[-al]` as the flags and `[directory names]` as arguments.
+  - `echo` - Can take `[$ENV_VAR]` or `[custom_text]` as the argument.
+  - `pwd`- Does not take any arguments. Prints the Current Working Directory.
+  - `cd` - Takes the absolute path or the relative path as an argument.
+  - `pinfo` - Can or cannot take arguments. When no arguments are given, it prints the details of the process of the shell. When a valid process id is given as the argument, it prints the details of that process.
+  - `nightswatch` - Syntax is `nightswatch -n [number_of_seconds] [interrupt/newborn]`. It prints the given argument every `number_of_seconds` in a man-page like style.
+  - `history` - Prints the last 10 commands.
+  - `exit` - Exits the shell.
+
 All the `.c` files have a corresponding `.h` file (except `main.c`) which contain all the function declarations.
 
 #### `bg_proc_list.c`

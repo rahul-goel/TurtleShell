@@ -138,8 +138,26 @@ void interrupt() {
         char *line = (char *) malloc(sizeof (char) * 2048);
         char *remember_line = line;
         size_t line_sz = 2048;
-        for (int i = 0; i < 3; i++) {
-            getline(&line, &line_sz, f);
+
+        while (getline(&line, &line_sz, f) != -1) {
+            char *copy = (char *) malloc(sizeof(char) * strlen(line));
+            strcpy(copy, line);
+            char *token = copy;
+
+            int flag = 0;
+            token = strtok(token, " \r\t\n");
+            while (token != NULL) {
+                if (strcmp(token, "i8042") == 0) {
+                    flag = 1;
+                }
+                token = strtok(NULL, " \r\t\n");
+            }
+
+            free(copy);
+
+            if(flag == 1) {
+                break;
+            }
         }
 
         int int_list[32], int_cnt = 0;

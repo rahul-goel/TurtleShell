@@ -1,4 +1,5 @@
 *.o
 TurtleShell
 .history.txt
+test
 *.out

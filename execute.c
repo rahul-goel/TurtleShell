@@ -207,33 +207,3 @@ int execute_one(char *line) {
     free(remember_token);
     return 1;
 }
-
-int execute(char *line) {
-    if (line[0] == '\n') {
-        return 1;
-    }
-
-    char *buf = (char *) malloc(strlen(line));
-    strcpy(buf, line);
-    char *token = buf;
-    char *remember_token = token;
-
-    char **list = malloc(sizeof(char *) * 10);
-    int list_size = 0;
-    token = strtok(token, ";");
-    while (token != NULL) {
-        list[list_size++] = token;
-        token = strtok(NULL, ";");
-    }
-
-    for (int i = 0; i < list_size; i++) {
-        if (!execute_one(list[i])) {
-            free(remember_token);
-            return 0;
-        }
-    }
-
-    free(remember_token);
-    return 1;
-}
-

@@ -8,6 +8,5 @@ void run_excvp(char *buf);
 int chek_last_ampersand(char *line);
 void remove_last_ampersand(char *line);
 int execute_one(char *line);
-int execute(char *line);
 
 #endif

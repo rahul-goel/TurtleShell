@@ -1,5 +1,6 @@
 #include "header.h"
 #include "ls.h"
+#include "execute_interface.h"
 #include "execute.h"
 #include "prompt.h"
 #include "ctrl_c.h"

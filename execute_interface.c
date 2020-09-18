@@ -21,7 +21,9 @@ int execute(char *line) {
     }
 
     for (int i = 0; i < list_size; i++) {
-        if ((strstr(list[i], "<") != NULL || strstr(list[i], ">") != NULL)) {
+        if (strstr(list[i], "|")) {
+            piping(list[i]);
+        } else if ((strstr(list[i], "<") != NULL || strstr(list[i], ">") != NULL)) {
             if (!redirect(list[i])) {
                 free(remember_token);
                 return 0;
@@ -172,7 +174,7 @@ int redirect(char *command) {
         close(output_fd);
     }
 
-    int ret = execute_one(parts[0]);
+    int ret = execute(parts[0]);
     dup2(remember_stdin, STDIN_FILENO);
     dup2(remember_stdout, STDOUT_FILENO);
     close(remember_stdin);
@@ -183,4 +185,98 @@ int redirect(char *command) {
     }
     free(parts);
     return ret;
+}
+
+
+char **piping_parse(char *command, int *cnt_parts) {
+    char *buf = (char *)malloc(sizeof(char) *strlen(command));
+    strcpy(buf, command);
+
+    char *token = buf;
+    int token_cnt = 0;
+
+    token = strtok(buf, "|\n");
+    while (token != NULL) {
+        token_cnt++;
+        token = strtok(NULL, "|\n");
+    }
+
+    char **diff_parts = (char **) malloc(sizeof(char *) * token_cnt);
+    strcpy(buf, command);
+
+    token = strtok(buf, "|\n");
+    token_cnt = 0;
+    while (token != NULL) {
+        diff_parts[token_cnt] = (char *) malloc(sizeof(char) * (5 + strlen(token)));
+        strcpy(diff_parts[token_cnt], token);
+        token_cnt++;
+        token = strtok(NULL, "|\n");
+    }
+
+    for (int i = 0; i < token_cnt; i++) {
+        trim_sidespaces(diff_parts[i]);
+    }
+
+    free(buf);
+
+    *cnt_parts = token_cnt;
+    return diff_parts;
+}
+
+// first delimiting should be done with piping | and then with redirection > >> <
+void piping(char *command) {
+    char *buf = (char *) malloc(sizeof(char) * strlen(command));
+    strcpy(buf, command);
+    int cnt_parts = 0;
+    char **diff_parts = piping_parse(buf, &cnt_parts);
+
+    // the time has come to keep track of your faithful friends
+    // maintain this relationship and they will come of help later
+    int remember_stdout = dup(STDOUT_FILENO);
+    int remember_stdin = dup(STDIN_FILENO);
+
+    int **pipe_list = (int **) malloc(sizeof(int *) * cnt_parts);
+    for (int i = 0; i < cnt_parts; i++) {
+        pipe_list[i] = (int *) malloc(sizeof(int) * 2);
+    }
+
+    for (int i = 0; i < cnt_parts; i++) {
+        if (pipe(pipe_list[i]) == -1) {
+            perror("Error in piping : ");
+            break;
+        }
+
+        if (i == 0) {
+            // the first command
+            dup2(pipe_list[i][1], STDOUT_FILENO);
+            execute(diff_parts[i]);
+            close(pipe_list[i][1]);
+        } else if (i == cnt_parts - 1) {
+            // the last command
+            dup2(pipe_list[i - 1][0], STDIN_FILENO);
+            dup2(remember_stdout, STDOUT_FILENO);
+            execute(diff_parts[i]);
+            close(pipe_list[i][1]);
+        } else {
+            // middle commands
+            dup2(pipe_list[i - 1][0], STDIN_FILENO);
+            dup2(pipe_list[i][1], STDOUT_FILENO);
+            execute(diff_parts[i]);
+            close(pipe_list[i][1]);
+        }
+    }
+
+    // told ya they will come of help later
+    dup2(remember_stdout, STDOUT_FILENO);
+    dup2(remember_stdin, STDIN_FILENO);
+
+    for (int i = 0; i < cnt_parts; i++) {
+        free(diff_parts[i]);
+    }
+    free(diff_parts);
+    for (int i = 0; i < cnt_parts; i++) {
+        free(pipe_list[i]);
+    }
+    free(pipe_list);
+    free(buf);
 }

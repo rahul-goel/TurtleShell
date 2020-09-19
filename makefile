@@ -12,5 +12,6 @@ all:
 	gcc -g -c history.c
 	gcc -g -c bg_proc_list.c
 	gcc -g -c nightswatch.c
-	gcc -g main.c global_var.o prompt.o ls.o pwd.o echo.o execute.o execute_interface.o pinfo.o cd.o ctrl_c.o history.o bg_proc_list.o nightswatch.o -ltinfo -lncurses -o TurtleShell
+	gcc -g -c env_var.c
+	gcc -g main.c global_var.o prompt.o ls.o pwd.o echo.o execute.o execute_interface.o pinfo.o cd.o ctrl_c.o history.o bg_proc_list.o nightswatch.o env_var.o -ltinfo -lncurses -o TurtleShell
 	rm -rf *.o

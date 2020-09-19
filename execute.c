@@ -8,6 +8,7 @@
 #include "bg_proc_list.h"
 #include "nightswatch.h"
 #include "prompt.h"
+#include "env_var.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -199,6 +200,10 @@ int execute_one(char *line) {
         echo(line);
     } else if (strcmp(token, "history") == 0) {
         history(line);
+    } else if (strcmp(token, "setenv") == 0) {
+        do_setenv(line);
+    } else if (strcmp(token, "unsetenv") == 0) {
+        do_unsetenv(line);
     } else {
         run_excvp(line);
     }

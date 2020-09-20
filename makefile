@@ -14,5 +14,6 @@ all:
 	gcc -g -c nightswatch.c
 	gcc -g -c env_var.c
 	gcc -g -c jobs.c
-	gcc -g main.c global_var.o prompt.o ls.o pwd.o echo.o execute.o execute_interface.o pinfo.o cd.o ctrl_c.o history.o bg_proc_list.o nightswatch.o env_var.o jobs.o -ltinfo -lncurses -o TurtleShell
+	gcc -g -c kjob.c
+	gcc -g main.c global_var.o prompt.o ls.o pwd.o echo.o execute.o execute_interface.o pinfo.o cd.o ctrl_c.o history.o bg_proc_list.o nightswatch.o env_var.o jobs.o kjob.o -ltinfo -lncurses -o TurtleShell
 	rm -rf *.o

@@ -10,6 +10,7 @@
 #include "prompt.h"
 #include "env_var.h"
 #include "jobs.h"
+#include "kjob.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -208,6 +209,8 @@ int execute_one(char *line) {
         do_unsetenv(line);
     } else if (strcmp(token, "jobs") == 0) {
         jobs(line);
+    } else if (strcmp(token, "kjob") == 0) {
+        kjob(line);
     } else {
         run_excvp(line);
     }

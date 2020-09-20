@@ -9,6 +9,7 @@
 #include "nightswatch.h"
 #include "prompt.h"
 #include "env_var.h"
+#include "jobs.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -32,6 +33,7 @@ void check_bg_process(int sig) {
             sprintf(out, "\nProcess %s with pid %d did not exit normally.\n", pname, pid);
             write(2, out, sizeof out);
         }
+        remove_bg_proc(pid);
         free(pname);
         prompt();
         fflush(stdout);
@@ -204,6 +206,8 @@ int execute_one(char *line) {
         do_setenv(line);
     } else if (strcmp(token, "unsetenv") == 0) {
         do_unsetenv(line);
+    } else if (strcmp(token, "jobs") == 0) {
+        jobs(line);
     } else {
         run_excvp(line);
     }

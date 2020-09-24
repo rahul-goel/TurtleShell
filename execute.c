@@ -3,6 +3,7 @@
 #include "ls.h"
 #include "cd.h"
 #include "echo.h"
+#include "pwd.h"
 #include "pinfo.h"
 #include "history.h"
 #include "bg_proc_list.h"
@@ -11,6 +12,7 @@
 #include "env_var.h"
 #include "jobs.h"
 #include "kjob.h"
+#include "fg.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -199,6 +201,8 @@ int execute_one(char *line) {
         cd(line);
     } else if (strcmp(token, "ls") == 0) {
         ls(line);
+    } else if (strcmp(token, "pwd") == 0) {
+        pwd();
     } else if (strcmp(token, "echo") == 0) {
         echo(line);
     } else if (strcmp(token, "history") == 0) {
@@ -211,6 +215,8 @@ int execute_one(char *line) {
         jobs(line);
     } else if (strcmp(token, "kjob") == 0) {
         kjob(line);
+    } else if (strcmp(token, "fg") == 0) {
+        fg(line);
     } else {
         run_excvp(line);
     }

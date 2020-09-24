@@ -89,6 +89,7 @@ void run_excvp_bg(char *buf) {
             }
             free(arg);
             free(command);
+            exit(1);
         }
     } else {
         struct bg_proc temp;
@@ -125,6 +126,7 @@ void run_excvp(char *buf) {
             }
             free(arg);
             free(command);
+            exit(1);
         }
     } else {
         int status;
@@ -186,7 +188,7 @@ int execute_one(char *line) {
     char *remember_token = token;
 
     token = strtok(token, " \t\r\n");
-    if (strcmp(token, "exit") == 0) {
+    if (strcmp(token, "exit") == 0 || strcmp(token, "quit") == 0) {
         return 0;
     }
 

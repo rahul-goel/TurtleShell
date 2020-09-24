@@ -32,9 +32,43 @@ void fg(char *command) {
     }
 
 
-    pid_t cur_group_id = getpgid(0);
-    if (setpgid(bg_proc_list[job_pos - 1].pid, cur_group_id) == -1) {
-        perror("Error : ");
+    pid_t pid = bg_proc_list[job_pos - 1].pid;
+
+    // ignore the input output in the shell
+    signal(SIGTTIN, SIG_IGN);
+    signal(SIGTTOU, SIG_IGN);
+
+    // Change the foreground process group
+    tcsetpgrp(STDIN_FILENO, getpgid(pid));
+
+    // Send continue signal to the process group
+    if (kill(pid, SIGCONT) < 0) {
+        perror("fg kill:");
+    }
+
+    // remove the process from the bg_proc_list
+    remove_bg_proc(pid);
+
+    // Now wait for the recently foreground brought process to complete
+    int status;
+    waitpid(pid, &status, WUNTRACED);
+
+
+    // restore the shell
+    tcsetpgrp(STDIN_FILENO, getpgid(0));
+
+    // restore the default action when input/output signal is raised
+    signal(SIGTTIN, SIG_DFL);
+    signal(SIGTTOU, SIG_DFL);
+
+    // if it is sent to background again, reinsert it
+    if (WIFSTOPPED(status)) {
+        struct bg_proc temp;
+        temp.pid = pid;
+        char *pname = find_proc_name(pid);
+        strcpy(temp.pname, pname);
+        free(pname);
+        insert_bg_process(&temp);
     }
 
     free(buf);

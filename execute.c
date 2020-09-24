@@ -13,6 +13,7 @@
 #include "jobs.h"
 #include "kjob.h"
 #include "fg.h"
+#include "bg.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -219,6 +220,8 @@ int execute_one(char *line) {
         kjob(line);
     } else if (strcmp(token, "fg") == 0) {
         fg(line);
+    } else if (strcmp(token, "bg") == 0) {
+        bg(line);
     } else {
         run_excvp(line);
     }

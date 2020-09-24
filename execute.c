@@ -14,6 +14,7 @@
 #include "kjob.h"
 #include "fg.h"
 #include "bg.h"
+#include "overkill.h"
 
 // argument is sig just for the sake of it i guess;
 // syntax for the functional call from signal;
@@ -222,6 +223,8 @@ int execute_one(char *line) {
         fg(line);
     } else if (strcmp(token, "bg") == 0) {
         bg(line);
+    } else if (strcmp(token, "overkill") == 0) {
+        overkill(line);
     } else {
         run_excvp(line);
     }

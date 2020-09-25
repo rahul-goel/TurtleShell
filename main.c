@@ -6,6 +6,7 @@
 #include "ctrl_c.h"
 #include "history.h"
 #include "bg_proc_list.h"
+#include "signal_handle.h"
 
 void prompt();
 void initialise();
@@ -16,8 +17,7 @@ void global_assign();
 
 int main() {
     initialise();
-    signal(SIGCHLD, check_bg_process);
-    signal(SIGINT, ctrl_c);
+    parent_signal();
 
     do {
         prompt();
@@ -79,6 +79,7 @@ void terminate() {
 
 void global_assign() {
     cnt_bg_proc = 0;
+    SHELLID = getpid();
 
     HOST = (char *) malloc(sizeof (char) * 1024);
     USER = (char *) malloc(sizeof (char) * 1024);

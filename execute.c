@@ -6,6 +6,7 @@
 #include "pwd.h"
 #include "pinfo.h"
 #include "history.h"
+#include "signal_handle.h"
 #include "bg_proc_list.h"
 #include "nightswatch.h"
 #include "prompt.h"
@@ -15,35 +16,6 @@
 #include "fg.h"
 #include "bg.h"
 #include "overkill.h"
-
-// argument is sig just for the sake of it i guess;
-// syntax for the functional call from signal;
-void check_bg_process(int sig) {
-    int status;
-    // -1 means any child process;
-    // since signal has been raised, then the process would have exited;
-    // return value will give the id of the just completed process;
-    pid_t pid = waitpid(-1, &status, WNOHANG);
-    if (pid > 0){
-        char *pname = (char *) malloc(sizeof(char) * 1024);
-        find_processname(pid, pname);
-        if (WIFEXITED(status)) {
-            char out[100];
-            memset(out, '\0', sizeof out);
-            sprintf(out, "\nProcess %s with pid %d exited normally.\n", pname, pid);
-            write(2, out, sizeof out);
-        } else {
-            char out[100];
-            memset(out, '\0', sizeof out);
-            sprintf(out, "\nProcess %s with pid %d did not exit normally.\n", pname, pid);
-            write(2, out, sizeof out);
-        }
-        remove_bg_proc(pid);
-        free(pname);
-        prompt();
-        fflush(stdout);
-    }
-}
 
 // command and argv will be filled with the command and argv
 // malloc before calling execvp_parse and execvp and the free them
@@ -79,7 +51,8 @@ void run_excvp_bg(char *buf) {
     if (pid < 0) {
         perror("Error");
     } else if (pid == 0) {
-        // change the child process group so that it happens in the background..
+        child_signal();
+        // change the child process group
         setpgid(0, 0);
 
         if (execvp(command, arg) < 0) {
@@ -120,6 +93,9 @@ void run_excvp(char *buf) {
     if (pid < 0) {
         perror("Error");
     } else if (pid == 0) {
+        child_signal();
+        // change the foreground group to the child process
+        tcsetpgrp(STDIN_FILENO, getpgid(0));
         if (execvp(command, arg) < 0) {
             // did not execute correctly so i need to free the memory
             write(2, "Error : No such command.\n", 26);
@@ -131,10 +107,25 @@ void run_excvp(char *buf) {
             exit(1);
         }
     } else {
+        // change the foreground group to the child process
+        tcsetpgrp(STDIN_FILENO, getpgid(pid));
         int status;
         waitpid(pid, &status, WUNTRACED);
         if (status < 0) {
             perror("Error");
+        }
+        // change the foreground group back to the parent process
+        tcsetpgrp(STDIN_FILENO, getpgid(0));
+        parent_signal();
+
+        // if ctrlz is sent to the process
+        if (WIFSTOPPED(status)) {
+            struct bg_proc temp;
+            temp.pid = pid;
+            char *pname = find_proc_name(pid);
+            strcpy(temp.pname, pname);
+            insert_bg_process(&temp);
+            free(pname);
         }
     }
 

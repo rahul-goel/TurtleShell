@@ -35,10 +35,7 @@ void bg(char *command) {
     pid_t pid = bg_proc_list[job_pos - 1].pid;
 
     // send the CONTINUE signal
-    if (kill(getpgid(pid), SIGSTOP) < 0) {
-        fprintf(stderr, "Error : failed to run the background process\n");
-    }
-    if (kill(getpgid(pid), SIGCONT) < 0) {
+    if (kill(pid, SIGCONT) < 0) {
         fprintf(stderr, "Error : failed to run the background process\n");
     }
 

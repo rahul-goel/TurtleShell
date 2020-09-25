@@ -57,30 +57,10 @@ void jobs(char *command) {
         char status = find_process_status(bg_proc_list[i].pid);
         char *status_name = (char *) malloc(sizeof(char) * 20);
     
-        switch (status) {
-            case 'R':
-                strcpy(status_name, "Running");
-                break;
-            case 'S':
-                strcpy(status_name, "Sleeping");
-                break;
-            case 'D':
-                strcpy(status_name, "Waiting");
-                break;
-            case 'Z':
-                strcpy(status_name, "Zombie");
-                break;
-            case 'T':
-                strcpy(status_name, "Stopped");
-                break;
-            case 't':
-                strcpy(status_name, "Tracing");
-                break;
-            case 'X':
-                strcpy(status_name, "Dead");
-                break;
-            default:
-                strcpy(status_name, "Status not found");
+        if (status == 'T') {
+            strcpy(status_name, "Stopped");
+        } else {
+            strcpy(status_name, "Running");
         }
 
         printf("[%d] %s %s [%d]\n", i + 1, status_name, bg_proc_list[i].pname, bg_proc_list[i].pid);

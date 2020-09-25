@@ -54,6 +54,7 @@ void initialise() {
         perror("Error in finding the Current Working Directory");
         exit(1);
     }
+    strcpy(LWD, HOME);
     print_open_msg();
 }
 
@@ -72,6 +73,18 @@ void print_open_msg() {
 }
 
 void terminate() {
+    free(HOST);
+    free(USER);
+    free(PWD);
+    free(LWD);
+    free(HOME);
+    free(SHELL);
+    free(HOST_str);
+    free(USER_str);
+    free(PWD_str);
+    free(HOME_str);
+    free(SHELL_str);
+
     printf(BRED);
     printf("\nWhat did The Big Bang Theory fans say after completing the Operating Systems Assignment...?\n.\n.\n.\nSheldon!\n\n");
     printf(WHT);
@@ -84,6 +97,7 @@ void global_assign() {
     HOST = (char *) malloc(sizeof (char) * 1024);
     USER = (char *) malloc(sizeof (char) * 1024);
     PWD = (char *) malloc(sizeof (char) * 1024);
+    LWD = (char *) malloc(sizeof (char) * 1024);
     HOME = (char *) malloc(sizeof (char) * 1024);
     SHELL = (char *) malloc(sizeof (char) * 1024);
     HOST_str = (char *) malloc(sizeof (char) * 1024);
@@ -95,6 +109,7 @@ void global_assign() {
     memset(HOST, '\0', sizeof(char) * 1024);
     memset(USER, '\0', sizeof(char) * 1024);
     memset(PWD, '\0', sizeof(char) * 1024);
+    memset(LWD, '\0', sizeof(char) * 1024);
     memset(HOME, '\0', sizeof(char) * 1024);
     memset(SHELL, '\0', sizeof(char) * 1024);
     memset(HOST_str, '\0', sizeof(char) * 1024);

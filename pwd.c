@@ -2,7 +2,7 @@
 #include "pwd.h"
 
 void pwd() {
-    if (getcwd(PWD, sizeof PWD) == NULL) {
+    if (getcwd(PWD, 1024) == NULL) {
         perror("Error in retrieving the present working directory.");
         return;
     }

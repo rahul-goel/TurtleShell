@@ -17,6 +17,7 @@ void fg(char *command) {
     if (cnt_token != 2) {
         fprintf(stderr, "Error : Syntax error in fg command\n");
         free(buf);
+        PROMPTSTATUS = 1;
         return;
     }
 
@@ -28,6 +29,7 @@ void fg(char *command) {
     if (job_pos < 1 || job_pos > cnt_bg_proc) {
         fprintf(stderr, "Error : Invalid Job ID\n");
         free(buf);
+        PROMPTSTATUS = 1;
         return;
     }
 

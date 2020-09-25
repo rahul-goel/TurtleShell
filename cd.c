@@ -41,6 +41,7 @@ void cd(char *path) {
             perror("Error");
             free(remember_token);
             free(store_LWD);
+            PROMPTSTATUS = 1;
             return;
         }
         token = strtok(NULL, "/\n\t\r");

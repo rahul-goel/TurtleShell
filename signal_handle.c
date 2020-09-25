@@ -19,16 +19,18 @@ void check_bg_process(int sig) {
             memset(out, '\0', sizeof out);
             sprintf(out, "\nProcess %s with pid %d exited normally.\n", pname, pid);
             write(2, out, sizeof out);
+            prompt(0);
+            fflush(stdout);
         } else {
             char out[100];
             memset(out, '\0', sizeof out);
             sprintf(out, "\nProcess %s with pid %d did not exit normally.\n", pname, pid);
             write(2, out, sizeof out);
+            prompt(1);
+            fflush(stdout);
         }
         remove_bg_proc(pid);
         free(pname);
-        prompt();
-        fflush(stdout);
     }
 }
 

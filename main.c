@@ -8,7 +8,6 @@
 #include "bg_proc_list.h"
 #include "signal_handle.h"
 
-void prompt();
 void initialise();
 void print_open_msg();
 void terminate();
@@ -20,7 +19,7 @@ int main() {
     parent_signal();
 
     do {
-        prompt();
+        prompt(0);
         fflush(stdout);
     } while (middle());
     terminate();
@@ -93,6 +92,7 @@ void terminate() {
 void global_assign() {
     cnt_bg_proc = 0;
     SHELLID = getpid();
+    errno = 0;
 
     HOST = (char *) malloc(sizeof (char) * 1024);
     USER = (char *) malloc(sizeof (char) * 1024);

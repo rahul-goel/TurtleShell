@@ -31,6 +31,7 @@ void nightswatch(char *line) {
     if (cnt_words != 4) {
         printf("Error : Syntax error in nightswatch.\n");
         free(remember_token);
+        PROMPTSTATUS = 1;
         return;
     }
 
@@ -42,6 +43,7 @@ void nightswatch(char *line) {
     if (strcmp(token, "-n") != 0) {
         printf("Error : Syntax error in nightswatch.\n");
         free(remember_token);
+        PROMPTSTATUS = 1;
         return;
     }
     token = strtok(NULL, " \t\r\n");
@@ -49,6 +51,7 @@ void nightswatch(char *line) {
     if (n == 0) {
         printf("Error : Syntax error in nightswatch.\n, The second argument must be a positive integer.");
         free(remember_token);
+        PROMPTSTATUS = 1;
         return;
     }
 
@@ -103,6 +106,7 @@ int print_interrupt_CPU() {
     FILE *f = fopen("/proc/interrupts", "r");
     if (f == NULL) {
         printw("Error : Unable to open the interrupt file.");
+        PROMPTSTATUS = 1;
         return -1;
     } else {
         char *line = (char *) malloc(sizeof (char) * 2048);

@@ -6,6 +6,7 @@ void trim_history(char *path) {
 
     if (!f) {
         perror("Error trim history");
+        PROMPTSTATUS = 1;
         return;
     }
 
@@ -71,6 +72,7 @@ void history(char *line) {
             if (token != NULL) {
                 printf("Error : Invalid Syntax for history.");
                 free(remember_token);
+                PROMPTSTATUS = 1;
                 return;
             }
         }

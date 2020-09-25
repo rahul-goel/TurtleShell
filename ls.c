@@ -23,6 +23,7 @@ void ls_normal_single(char *directory, char *filename) {
     struct stat file_stat;
     if (stat(abspath, &file_stat) == -1) {
         perror("Error");
+        PROMPTSTATUS = 1;
         return;
     }
 
@@ -49,6 +50,7 @@ void ls_normal_dir(char *directory, int hiddenflag) {
     int n = scandir(directory, &list, NULL, alphasort);
     if (n < 0) {
         perror("Error");
+        PROMPTSTATUS = 1;
         return;
     } else {
         for (int i = 0; i < n ;i++) {
@@ -92,6 +94,7 @@ void ls_l_single(char *directory, char *filename) {
     struct stat file_stat;
     if (stat(abspath, &file_stat) == -1) {
         perror("Error");
+        PROMPTSTATUS = 1;
         return;
     }
 
@@ -146,6 +149,7 @@ void ls_l_dir(char *directory, int hiddenflag) {
     int n = scandir(directory, &list, NULL, alphasort);
     if (n < 0) {
         perror("Error");
+        PROMPTSTATUS = 1;
         return;
     }
 
@@ -177,6 +181,7 @@ void ls_flag_wrapper(char *abspath, int hiddenflag, int listflag) {
     struct stat file_stat;
     if (stat(abspath, &file_stat) == -1) {
         perror("Error");
+        PROMPTSTATUS = 1;
         return;
     }
     if (S_ISDIR(file_stat.st_mode)) {

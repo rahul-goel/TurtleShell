@@ -1,6 +1,6 @@
 #ifndef PROMPT_H
 #define PROMPT_H
 
-void prompt();
+void prompt(int status);
 
 #endif

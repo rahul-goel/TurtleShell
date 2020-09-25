@@ -114,6 +114,9 @@ void run_excvp(char *buf) {
         if (status < 0) {
             perror("Error");
         }
+        if (status != 0) {
+            PROMPTSTATUS = 1;
+        }
         // change the foreground group back to the parent process
         tcsetpgrp(STDIN_FILENO, getpgid(0));
         parent_signal();

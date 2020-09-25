@@ -16,6 +16,7 @@ void kjob(char *command) {
     if (token_cnt != 3) {
         fprintf(stderr, "Error : Syntax for kjob is wrong. It should have exactly 2 arguments.\n");
         free(buf);
+        PROMPTSTATUS = 1;
         return;
     }
 
@@ -29,6 +30,7 @@ void kjob(char *command) {
 
     if (job_pos < 1 || job_pos > cnt_bg_proc) {
         fprintf(stderr, "Error : Wrong job ID entered\n"); 
+        PROMPTSTATUS = 1;
     } else {
         if (kill(bg_proc_list[job_pos - 1].pid, signal_id) == -1) {
             fprintf(stderr, "Error : Could not send the signal to the process. The following could be the reasons.\nInvalid Signal Argument.\n Permission Denied to send the signal.\n No such proces found.\n");

@@ -15,6 +15,7 @@ int print_env_var(char *v) {
         printf("%s ", SHELL);
     } else {
         perror("Error : No such environment variable is defined.\n");
+        PROMPTSTATUS = 1;
         return -1;
     }
     return 0;

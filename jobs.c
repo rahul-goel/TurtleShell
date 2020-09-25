@@ -50,6 +50,7 @@ int check_job_validity(char *command) {
 void jobs(char *command) {
     if (!check_job_validity(command)) {
         fprintf(stderr, "Error in syntax of jobs.\n");
+        PROMPTSTATUS = 1;
         return;
     }
 

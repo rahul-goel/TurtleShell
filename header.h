@@ -4,6 +4,7 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <time.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <libgen.h>
 #include <string.h>

@@ -18,6 +18,7 @@ void overkill(char *command) {
 
     if (token_cnt != 1) {
         fprintf(stderr, "Syntax error in overkill command.\n");
+        PROMPTSTATUS = 1;
         free(buf);
         return;
     }

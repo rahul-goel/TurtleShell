@@ -4,6 +4,7 @@
 void pwd() {
     if (getcwd(PWD, 1024) == NULL) {
         perror("Error in retrieving the present working directory.");
+        PROMPTSTATUS = 1;
         return;
     }
     char *occ = strstr(PWD, HOME);

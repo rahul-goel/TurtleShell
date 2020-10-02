@@ -75,3 +75,24 @@ Contains code to send a prompt which has the username, hostname and the current 
 
 #### `pwd.c`
 Contains the code to change the present working directory.
+
+### `execute_interface.c`
+Contains the code for redirection and piping.
+
+### `bg.c`
+Contains code for the implementation of the `bg` command.
+
+### `fg.c`
+Contains code for the implementation of the `fg` command.
+
+### `env_var.c`
+Contains code for the implemntation of the `setenv` command and the `unsetenv` command.
+
+### `jobs.c`
+Contains code for the implementation of the `jobs` command.
+
+### `kjob.c`
+Contains code for the implementation of the `kjob` command.
+
+### `signal_handle.c`
+Contains code for signal handling and switching the signal handlers for child and parent process.

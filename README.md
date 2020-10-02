@@ -22,7 +22,18 @@ make
   - `pinfo` - Can or cannot take arguments. When no arguments are given, it prints the details of the process of the shell. When a valid process id is given as the argument, it prints the details of that process.
   - `nightswatch` - Syntax is `nightswatch -n [number_of_seconds] [interrupt/newborn]`. It prints the given argument every `number_of_seconds` in a man-page like style.
   - `history` - Prints the last 10 commands if no argument is given. Else prints the last `arg` commands.
-  - `exit` - Exits the shell.
+  - `exit` or `quit` - Exits the shell.
+  - Input/Output redirection alongside Piping for commands is supported. 
+  - `setenv var [value]` - Sets the environment variable that lasts till the shell is running.
+  - `unsetenv var` - Unsets the environment variable.
+  - `jobs` - Lists all the jobs that the shell has spawned that are running in the background.
+  - `kjobs <job number> <signal number>` - Used to send a signal to a background process.
+  - `fg <job number>` - Brings a background executing process to foreground.
+  - `bg <job number>` - Resuemes a stopped background process in background itself.
+  - `overkill` - Terminates all the background jobs.
+  - Can handle signals like `SIGINT` and `SIGSTP`.
+  - `cd -` - Supports the last working directory.
+  - Prints a coloured prompt indicating the successful/unsuccesful run of the previous command.
 
 All the `.c` files have a corresponding `.h` file (except `main.c`) which contain all the function declarations.
 
